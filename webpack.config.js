@@ -2,6 +2,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
+const CopyPlugin = require("copy-webpack-plugin"); //复制css文件
 
 module.exports = {
   // entry: path.resolve(__dirname, "src/index.js"),//入口
@@ -58,6 +59,13 @@ module.exports = {
     }),
     new CleanWebpackPlugin(), //清除多余dist插件
     new VueLoaderPlugin(), //vue相关插件
+    new CopyPlugin([
+      {
+        from: path.resolve(__dirname, "src/public"),
+        to: path.resolve(__dirname, "dist"),
+        ignore: ["index.html"],
+      },
+    ]),
   ],
 
   //配置开发模式
@@ -80,6 +88,9 @@ module.exports = {
     alias: {
       //给路径取别名,将默认路径改为 ↓
       // vue$: "vue/dist/vue.esm.js",
+
+      // 给根路径下的src取别名为@
+      "@": path.resolve(__dirname, "src"),
     },
   },
 };
